@@ -1,6 +1,6 @@
 ---
 - name: Config Drift
-  hosts: rhel
+  hosts: all
   become: yes
   gather_facts: no
 
