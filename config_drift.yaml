@@ -1,0 +1,20 @@
+---
+- name: Config Drift
+  hosts: rhel
+  become: yes
+  gather_facts: no
+
+  tasks:
+### Example of showing diffs in check mode ###
+    - name: "Only show diff between test1.txt & test2.txt" 
+      copy:
+        src: sudoers.config
+        dest: /etc/sudoers
+      check_mode: yes
+      diff: yes
+
+### Example of automatically replacing if file checksum differs ###
+    - name: "Make sure the known sudoers file exists at location" 
+      copy:
+        src: sudoers.config
+        dest: /etc/sudoers
