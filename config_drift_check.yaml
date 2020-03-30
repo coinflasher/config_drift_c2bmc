@@ -23,7 +23,7 @@
     - name: Fetch Sudoers to compare 
       fetch:
         src: /etc/sudoers
-        dest: /tmp/temp_sudoers
+        dest: "{{ playbook_dir  }}/temp_sudoers"
         flat: yes
     
     - name: Diff sudoers file
@@ -33,20 +33,20 @@
       ignore_errors: yes
       become: no
 
-    - name: Generate slack response
-      template:
-        src: slack.j2
-        dest: files/response.json
-      become: no
-      delegate_to: localhost
+    # - name: Generate slack response
+    #   template:
+    #     src: slack.j2
+    #     dest: files/response.json
+    #   become: no
+    #   delegate_to: localhost
 
-    - name: Send Slack confirmation
-      uri:
-        url: "{{response_url}}"
-        body: "{{lookup('file', 'files/response.json')}}"
-        body_format: json
-        method: POST
-        validate_certs: no
-      become: no
-      delegate_to: localhost
-      run_once: yes
+    # - name: Send Slack confirmation
+    #   uri:
+    #     url: "{{response_url}}"
+    #     body: "{{lookup('file', 'files/response.json')}}"
+    #     body_format: json
+    #     method: POST
+    #     validate_certs: no
+    #   become: no
+    #   delegate_to: localhost
+    #   run_once: yes
