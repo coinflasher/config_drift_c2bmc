@@ -21,7 +21,7 @@
       become: yes
 
     - name: Diff sudoers file
-      command: diff files/sudoers.config /tmp/sudoers
+      command: diff files/sudoers.config {{ playbook_dir }}/temp_sudoers
       register: difference
       delegate_to: localhost
       ignore_errors: yes
