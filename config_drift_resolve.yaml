@@ -13,7 +13,7 @@
     - name: Send Slack confirmation
       uri:
         url: "{{response_url}}"
-        body: "{'text':'Suoders file is compliant'}"
+        body: "{'text':'Sudoers file is now compliant.'}"
         body_format: json
         method: POST
         validate_certs: no
