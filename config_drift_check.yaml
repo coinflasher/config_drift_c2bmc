@@ -25,7 +25,7 @@
         flat: yes
     
     - name: Diff sudoers file
-      command: diff files/sudoers.config files/"{{inventory_hostname}}"/etc/sudoers
+      command: diff files/sudoers.config /tmp/sudoers
       register: difference
       delegate_to: localhost
       ignore_errors: yes
