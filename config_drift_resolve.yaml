@@ -1,0 +1,40 @@
+---
+- name: Config Drift
+  hosts: rhel
+  become: yes
+  gather_facts: no
+  tasks:
+# Example of automatically replacing if file checksum differs ###
+    - name: "Make sure the known sudoers file exists at location" 
+      copy:
+        src: files/sudoers.config
+        dest: /etc/sudoers
+    - name: Fetch Sudoers to compare 
+      fetch:
+        src: /etc/sudoers
+        dest: files
+    
+    - name: Diff sudoers file
+      command: diff files/sudoers.config files/"{{inventory_hostname}}"/etc/sudoers
+      register: difference
+      delegate_to: localhost
+      ignore_errors: yes
+      become: no
+
+    - name: Generate slack response
+      template:
+        src: slack.j2
+        dest: files/response.json
+      become: no
+      delegate_to: localhost
+
+    - name: Send Slack confirmation
+      uri:
+        url: "{{response_url}}"
+        body: "{{lookup('file', 'files/response.json')}}"
+        body_format: json
+        method: POST
+        validate_certs: no
+      become: no
+      delegate_to: localhost
+      run_once: yes
