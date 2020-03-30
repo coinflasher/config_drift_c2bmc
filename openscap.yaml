@@ -1,0 +1,31 @@
+- hosts: stig
+  become: yes
+  
+  vars:
+    oscap_profile: xccdf_org.ssgproject.content_profile_pci-dss
+    oscap_policy: ssg-rhel-dss
+    packages:
+      - openscap-scanner
+      - scap-security-guide
+  tasks:
+    - name: install openscap scanner
+      yum:
+        name: "{{ packages }}"
+        state: latest
+##--profile xccdf_org.ssgproject.content_profile_stig-rhel7-disa
+    - block:
+      - name: run openscap
+        command: oscap xccdf eval \
+          --profile xccdf_org.ssgproject.content_profile_standard \
+          --results-arf /tmp/oscap-arf.xml \
+          --report /tmp/oscap-report.html \
+          --fetch-remote-resources \
+          /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
+        ignore_errors: yes
+
+      always:
+      - name: download report
+        fetch:
+          src: /tmp/oscap-report.html
+          dest: ../oscap-reports/{{ inventory_hostname }}.html
+          flat: yes
