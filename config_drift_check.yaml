@@ -1,7 +1,6 @@
 ---
 - name: Config Drift
   hosts: all
-  become: yes
   gather_facts: no
 
   tasks:
@@ -10,6 +9,7 @@
       copy:
         src: files/sudoers.config
         dest: /etc/sudoers
+      become: yes
       check_mode: yes
       diff: yes
 
@@ -26,14 +26,14 @@
         src: /etc/sudoers
         dest: "{{ playbook_dir }}/temp_sudoers"
         flat: yes
-      delegate_to: localhost
+
     
     - name: Diff sudoers file
       command: diff files/sudoers.config /tmp/sudoers
       register: difference
       delegate_to: localhost
       ignore_errors: yes
-      become: no
+
 
     # - name: Generate slack response
     #   template:
