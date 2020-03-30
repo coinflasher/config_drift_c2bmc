@@ -26,6 +26,7 @@
         src: /etc/sudoers
         dest: "{{ playbook_dir }}/temp_sudoers"
         flat: yes
+      become: yes
 
     
     - name: Diff sudoers file
