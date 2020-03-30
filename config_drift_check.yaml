@@ -13,14 +13,6 @@
       check_mode: yes
       diff: yes
 
-## Example of automatically replacing if file checksum differs ###
-    # - name: "Make sure the known sudoers file exists at location" 
-    #   copy:
-    #     src: files/sudoers.config
-    #     dest: /etc/sudoers
-    - debug:
-        var: playbook_dir
-
     - name: Fetch Sudoers to compare 
       fetch:
         src: /etc/sudoers
@@ -28,28 +20,26 @@
         flat: yes
       become: yes
 
-    
     - name: Diff sudoers file
       command: diff files/sudoers.config /tmp/sudoers
       register: difference
       delegate_to: localhost
       ignore_errors: yes
 
+    - name: Generate slack response
+      template:
+        src: slack.j2
+        dest: files/response.json
+      become: no
+      delegate_to: localhost
 
-    # - name: Generate slack response
-    #   template:
-    #     src: slack.j2
-    #     dest: files/response.json
-    #   become: no
-    #   delegate_to: localhost
-
-    # - name: Send Slack confirmation
-    #   uri:
-    #     url: "{{response_url}}"
-    #     body: "{{lookup('file', 'files/response.json')}}"
-    #     body_format: json
-    #     method: POST
-    #     validate_certs: no
-    #   become: no
-    #   delegate_to: localhost
-    #   run_once: yes
+    - name: Send Slack confirmation
+      uri:
+        url: "{{response_url}}"
+        body: "{{lookup('file', 'files/response.json')}}"
+        body_format: json
+        method: POST
+        validate_certs: no
+      become: no
+      delegate_to: localhost
+      run_once: yes
