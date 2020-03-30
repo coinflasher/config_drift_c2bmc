@@ -18,6 +18,8 @@
     #   copy:
     #     src: files/sudoers.config
     #     dest: /etc/sudoers
+    - debug:
+        var: playbook_dir
     - name: Fetch Sudoers to compare 
       fetch:
         src: /etc/sudoers
