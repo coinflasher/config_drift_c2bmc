@@ -20,11 +20,13 @@
     #     dest: /etc/sudoers
     - debug:
         var: playbook_dir
+
     - name: Fetch Sudoers to compare 
       fetch:
         src: /etc/sudoers
-        dest: "{{ playbook_dir  }}/temp_sudoers"
+        dest: "{{ playbook_dir }}/temp_sudoers"
         flat: yes
+      delegate_to: localhost
     
     - name: Diff sudoers file
       command: diff files/sudoers.config /tmp/sudoers
