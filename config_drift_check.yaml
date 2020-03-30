@@ -21,7 +21,7 @@
     - name: Fetch Sudoers to compare 
       fetch:
         src: /etc/sudoers
-        dest: tmp/temp_sudoers
+        dest: /tmp/temp_sudoers
         flat: yes
     
     - name: Diff sudoers file
