@@ -1,6 +1,4 @@
 {"text":"Difference detected in sudoers file 
-8a9,11
-> ### Edited for demo
-> 
-> ### Another edit for demo
+8a9
+> ## manual changes
 "}
