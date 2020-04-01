@@ -6,8 +6,6 @@
     response_url: 'https://hooks.slack.com/services/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'
 
   tasks:
-    - pause:
-       seconds: 5
 ### Example of showing diffs in check mode ###
     - name: "Show diff between test1.txt & test2.txt" 
       copy:
