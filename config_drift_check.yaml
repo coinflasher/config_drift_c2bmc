@@ -2,8 +2,6 @@
 - name: Config Drift
   hosts: all
   gather_facts: no
-  vars:
-    response_url: 'https://hooks.slack.com/services/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'
 
   tasks:
 ### Example of showing diffs in check mode ###
