@@ -1,0 +1,7 @@
+---
+- name: RHEL 7 STIG
+  hosts: rhel
+  become: yes
+        
+  roles:
+    - role: ansible-security-compliance.rhel7-role-stig-rhel7-disa
